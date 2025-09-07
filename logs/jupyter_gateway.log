@@ -47,3 +47,24 @@ Connecting to kernel 07eebf21-991d-42f8-86d9-5c0d14922b1a.
 interrupted
 Shutting down...
 Kernel shutdown: 07eebf21-991d-42f8-86d9-5c0d14922b1a
+Jupyter Kernel Gateway 3.0.1 is available at http://127.0.0.1:8888
+Kernel started: dea2110d-3552-4f5a-afcb-327fc1e9550e
+No session ID specified
+Connecting to kernel dea2110d-3552-4f5a-afcb-327fc1e9550e.
+interrupted
+Shutting down...
+Kernel shutdown: dea2110d-3552-4f5a-afcb-327fc1e9550e
+Jupyter Kernel Gateway 3.0.1 is available at http://127.0.0.1:8888
+Kernel started: 29d15eec-bc7a-478d-ba73-fc64e85895da
+No session ID specified
+Connecting to kernel 29d15eec-bc7a-478d-ba73-fc64e85895da.
+interrupted
+Shutting down...
+Kernel shutdown: 29d15eec-bc7a-478d-ba73-fc64e85895da
+Jupyter Kernel Gateway 3.0.1 is available at http://127.0.0.1:8888
+Kernel started: 969ac0a3-08c5-4945-a4c2-a1c80ebaf2a6
+No session ID specified
+Connecting to kernel 969ac0a3-08c5-4945-a4c2-a1c80ebaf2a6.
+interrupted
+Shutting down...
+Kernel shutdown: 969ac0a3-08c5-4945-a4c2-a1c80ebaf2a6

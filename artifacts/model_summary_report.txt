@@ -1,0 +1,4 @@
+Model: Random Forest Regressor
+RMSE: 28352.112565630196
+Model Path: ./artifacts/random_forest_model.pkl
+Insights: The model predicts house prices with an RMSE of approximately 28,352. This indicates the average deviation of the predicted prices from the actual prices.

@@ -13,7 +13,7 @@ def speaker_selection_method(last_speaker, group_chat):
 
 llm_config = LLMConfig(
     api_type="openai", 
-    model="gpt-4.1-mini",
+    model="gpt-4o-mini",
     temperature=0,
     timeout=120
 )
@@ -37,7 +37,7 @@ group_chat = GroupChat(
 
 manager = Manager(group_chat, llm_config)
 
-task = task = """
+task = """
     You are a team of agents working together under CRISP-DM workflow,
     coordinated by the Manager agent.
 
