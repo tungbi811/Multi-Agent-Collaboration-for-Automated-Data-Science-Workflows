@@ -1,0 +1,209 @@
+business_analyst_task:
+  description: >
+    Act as a Business Analyst. 
+    Your job is to:
+    1. Interpret the user's request (business objective, success criteria, and key questions).
+    2. Review the provided CSV dataset to check what data it contains (target variable, features, time horizon, etc.).
+    3. Assess whether the dataset is sufficient, relevant, and aligned with the user's request.
+    4. Identify gaps, risks, and assumptions.
+  expected_output: >
+    A structured markdown report with the following sections:
+    ## Business Objective
+    - Clarified objective from the user's request.
+    - Type of problem (classification, regression, forecasting, etc.).
+    ## Data Assessment
+    - Summary of dataset (rows, columns, main variables).
+    - Mapping of dataset variables to the business objective.
+    ## Suitability Check
+    - Strengths: what the dataset can answer.
+    - Limitations: what the dataset cannot answer.
+    - Risks and assumptions.
+    ## Recommendation
+    - Suggested next steps for data analysis and modeling.
+  inputs:
+    - name: user_request
+      type: string
+      description: The original user prompt or business question.
+    - name: dataset
+      type: file
+      format: csv
+      description: The dataset provided by the user.
+  acceptance_criteria:
+    - Must clearly identify the business problem type.
+    - Must mention whether the dataset supports the objective or not.
+    - Must highlight missing data, risks, or ambiguities.
+  handoff_notes: >
+    Output will be passed to the Data Analyst, who will expand into a detailed exploratory report.
+  agent: business_analyst
+  output_file: artifacts/ba_report.md
+
+data_analyst_task:
+  description: >
+    Act as a Data Analyst.
+    Your job is to:
+    1. Explore the dataset provided (summary stats, missing values, distributions, correlations).
+    2. Connect findings to the clarified business objectives from the Business Analyst.
+    3. Identify variables that are most relevant to the objective (drivers, target variable).
+    4. Highlight data quality issues, transformations needed, and potential feature engineering.
+    5. Whenever you need to run code, call the tool `python_exec` with raw Python code (no markdown fences).
+       - Print concise results such as dataset shape, head(), describe(), correlations.
+       - Avoid printing entire large datasets; summarize instead.
+       - After each run, explain in Markdown what was done and the insights obtained.
+  expected_output: >
+    A structured markdown report with the following sections:
+    ## Dataset Overview
+    - Shape (rows, columns)
+    - Data types of each column
+    - Missing values summary
+    ## Descriptive Statistics
+    - Summary stats of numerical features
+    - Frequency counts for categorical features
+    ## Key Insights
+    - Distribution of target variable
+    - Correlations between variables and target
+    - Initial patterns relevant to the business objective
+    ## Data Quality & Preparation Needs
+    - Missing data handling
+    - Outlier detection
+    - Suggested transformations or encodings
+    ## Recommendation
+    - Key features to focus on
+    - Potential features to engineer
+    - Data limitations to inform Data Engineer
+    ## Code and Outputs
+    - All computations should be run via the `python_exec` tool.
+    - Include outputs of key steps (statistics, correlations) and explain them.
+  inputs:
+    - name: dataset
+      type: file
+      format: csv
+      description: Dataset provided by the user
+    - name: ba_report
+      type: markdown
+      description: Report from the Business Analyst task
+  acceptance_criteria:
+    - Must include statistics (mean, median, std, min, max) for numerical columns
+    - Must describe target variable distribution
+    - Must list at least 3 potential issues or risks in the dataset
+    - Must connect analysis back to the business objective
+  handoff_notes: >
+    Output will be passed to the Data Engineer for pipeline design and to the Data Scientist for model preparation.
+  agent: data_analyst
+  output_file: artifacts/da_report.md
+
+data_engineer_task:
+  description: >
+    Act as a Data Engineer.
+    Your job is to:
+    1. Design a robust data pipeline based on the dataset and the findings of the Data Analyst.
+    2. Address the data quality issues identified (missing values, categorical encoding, outliers, etc.).
+    3. Define the end-to-end flow: ingestion → validation → cleaning → transformation → storage.
+    4. Recommend technologies, tools, and storage formats suitable for the task.
+    5. Ensure the pipeline is modular and reusable for future datasets.
+    6. Whenever you need to test or validate pipeline steps, call the tool `python_exec` with raw Python code (no markdown fences).
+       - Print concise results such as schema after transformation, sample rows, and null counts.
+       - Avoid dumping entire large datasets.
+       - After each run, explain in Markdown what was done and why.
+  expected_output: >
+    A structured markdown report with the following sections:
+    ## Pipeline Overview
+    - High-level architecture diagram (text-based or ASCII if needed)
+    - Data flow stages from raw → processed
+    ## Processing Steps
+    - Missing value handling
+    - Data type conversions
+    - Encoding categorical features
+    - Outlier treatment
+    - Feature engineering (if required)
+    ## Technologies & Tools
+    - Suggested libraries/frameworks (e.g., pandas, Spark, Airflow, dbt)
+    - Storage formats (e.g., Parquet, SQL, cloud storage)
+    ## Error Handling & Robustness
+    - How to handle schema changes, corrupted rows, or missing files
+    - Logging and monitoring recommendations
+    ## Handoff
+    - Location and format of the processed dataset ready for Data Scientist
+    ## Code and Outputs
+    - All validations and transformations should be run via the `python_exec` tool.
+    - Include outputs of key checks (schema, dtypes, missing values, processed data shape).
+  inputs:
+    - name: dataset
+      type: file
+      format: csv
+      description: Dataset provided by the user
+    - name: da_report
+      type: markdown
+      description: Data Analyst report with EDA and data quality issues
+  acceptance_criteria:
+    - Must cover ingestion, cleaning, transformation, and storage
+    - Must propose at least one storage format for processed data
+    - Must describe at least 3 data quality fixes aligned with DA report
+    - Must include handoff details for Data Scientist
+  handoff_notes: >
+    Output will be passed to the Data Scientist for modeling. Deliver a processed dataset (cleaned and transformed).
+  agent: data_engineer
+  output_file: artifacts/pipeline_design.md
+
+
+data_scientist_task:
+  description: >
+    Act as a Data Scientist.
+    Your job is to:
+    1. Review and integrate insights from the Data Analyst (EDA, key variables, business relevance).
+    2. Apply the pipeline design from the Data Engineer (data cleaning, encoding, transformations).
+    3. Develop and train predictive/forecasting models to address the business objective.
+    4. Evaluate the models using appropriate metrics (accuracy, precision/recall, RMSE, etc.).
+    5. Diagnose potential issues (overfitting, data leakage, imbalance).
+    6. Produce a final markdown report that summarizes the entire data science workflow and provides recommendations.
+    7. Whenever you need to train or evaluate models, call the tool `python_exec` with raw Python code (no markdown fences).
+       - Print all evaluation metrics clearly (accuracy, RMSE, precision/recall, etc.).
+       - Show model summaries or feature importances when relevant.
+       - Keep code modular and reproducible.
+       - After each run, summarize results and connect back to the business objective in Markdown.
+  expected_output: >
+    A structured markdown report with the following sections:
+    ## Executive Summary
+    - High-level recap of business objective
+    ## Data Understanding (from Data Analyst)
+    - Key dataset characteristics
+    - Variables relevant to the business objective
+    ## Data Preparation (from Data Engineer)
+    - Cleaning steps applied
+    - Encoding, transformations, feature engineering
+    ## Modeling
+    - Algorithms selected and why
+    - Training process
+    - Hyperparameter tuning (if applied)
+    ## Results
+    - Model performance metrics
+    - Comparison of models
+    - Limitations and risks
+    ## Business Recommendation
+    - How the model outputs can be applied to decision-making
+    - Suggestions for improvement or next steps
+    ## Code and Outputs
+    - All modeling and evaluation should be run via the `python_exec` tool.
+    - Include outputs of key steps (model metrics, summaries) and explain them.
+  inputs:
+    - name: dataset
+      type: file
+      format: csv
+      description: Processed dataset from Data Engineer
+    - name: da_report
+      type: markdown
+      description: Report from the Data Analyst
+    - name: de_report
+      type: markdown
+      description: Report from the Data Engineer
+    - name: ba_report
+      type: markdown
+      description: Report from the Business Analyst
+  acceptance_criteria:
+    - Must explicitly reference insights from DA and methods from DE
+    - Must train at least one predictive model relevant to the business objective
+    - Must report at least 2 performance metrics
+    - Must include a business-focused recommendation section
+  handoff_notes: >
+    This is the final step. The report will be delivered to stakeholders as the consolidated analysis.
+  agent: data_scientist
+  output_file: artifacts/ds_report.md
