@@ -1,4 +1,0 @@
-notes
-"Prepared datasets: X_train_scaled.csv, X_valid_scaled.csv, X_test_scaled.csv
-Feature list: feature_list.csv
-Notes: Missing values and outliers handled. Stratified train-validation-test split done."

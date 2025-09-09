@@ -1,0 +1,23 @@
+[project]
+name = "crips_dm_crew"
+version = "0.1.0"
+description = "crips_dm_crew using crewAI"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "crewai[tools]>=0.177.0,<1.0.0"
+]
+
+[project.scripts]
+crips_dm_crew = "crips_dm_crew.main:run"
+run_crew = "crips_dm_crew.main:run"
+train = "crips_dm_crew.main:train"
+replay = "crips_dm_crew.main:replay"
+test = "crips_dm_crew.main:test"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "crew"
