@@ -4,7 +4,7 @@ import warnings
 
 from datetime import datetime
 
-from au_ds_agents.crew import AuDsAgents
+from auto_ds_agents.crew import AuDsAgents
 
 warnings.filterwarnings("ignore", category=SyntaxWarning, module="pysbd")
 

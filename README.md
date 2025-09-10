@@ -22,10 +22,10 @@ crewai install
 
 **Add your `OPENAI_API_KEY` into the `.env` file**
 
-- Modify `src/au_ds_agents/config/agents.yaml` to define your agents
-- Modify `src/au_ds_agents/config/tasks.yaml` to define your tasks
-- Modify `src/au_ds_agents/crew.py` to add your own logic, tools and specific args
-- Modify `src/au_ds_agents/main.py` to add custom inputs for your agents and tasks
+- Modify `src/auto_ds_agents/config/agents.yaml` to define your agents
+- Modify `src/auto_ds_agents/config/tasks.yaml` to define your tasks
+- Modify `src/auto_ds_agents/crew.py` to add your own logic, tools and specific args
+- Modify `src/auto_ds_agents/main.py` to add custom inputs for your agents and tasks
 
 ## Running the Project
 

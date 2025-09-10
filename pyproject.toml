@@ -1,5 +1,5 @@
 [project]
-name = "au_ds_agents"
+name = "auto_ds_agents"
 version = "0.1.0"
 description = "au-ds-agents using crewAI"
 authors = [{ name = "Your Name", email = "you@example.com" }]
@@ -9,11 +9,11 @@ dependencies = [
 ]
 
 [project.scripts]
-au_ds_agents = "au_ds_agents.main:run"
-run_crew = "au_ds_agents.main:run"
-train = "au_ds_agents.main:train"
-replay = "au_ds_agents.main:replay"
-test = "au_ds_agents.main:test"
+auto_ds_agents = "auto_ds_agents.main:run"
+run_crew = "auto_ds_agents.main:run"
+train = "auto_ds_agents.main:train"
+replay = "auto_ds_agents.main:replay"
+test = "auto_ds_agents.main:test"
 
 [build-system]
 requires = ["hatchling"]
