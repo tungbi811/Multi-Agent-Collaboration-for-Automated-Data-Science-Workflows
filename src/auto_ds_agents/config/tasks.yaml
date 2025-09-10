@@ -1,17 +1,63 @@
-research_task:
+business_understanding:
   description: >
-    Conduct a thorough research about {topic}
-    Make sure you find any interesting and relevant information given
-    the current year is {current_year}.
+    Understand the business problem, define objectives, KPIs, and constraints.
+    Identify data sources and feasibility. Produce a clear problem statement.
   expected_output: >
-    A list with 10 bullet points of the most relevant information about {topic}
-  agent: researcher
+    Business objectives, KPIs, constraints, feasibility notes.
+  agent: business_analyst
+  output_file: business_understanding.md
 
-reporting_task:
+data_understanding:
   description: >
-    Review the context you got and expand each topic into a full section for a report.
-    Make sure the report is detailed and contains any and all relevant information.
+    Explore the data, check availability and quality, summarize distributions,
+    detect anomalies, missing values, or imbalances. Provide initial insights.
   expected_output: >
-    A fully fledged report with the main topics, each with a full section of information.
-    Formatted as markdown without '```'
-  agent: reporting_analyst
+    Data profile, quality report, list of issues and initial insights.
+  agent: data_explorer
+  output_file: data_understanding.md
+
+data_preparation:
+  description: >
+    Clean, transform, and prepare the data for modeling. Handle missing values,
+    duplicates, scaling, and encoding. Perform feature engineering and produce
+    a final dataset for modeling.
+  expected_output: >
+    Business objectives, KPIs, constraints, feasibility notes.
+  agent: data_engineer
+  context: [data_understanding]
+
+modeling:
+  description: >
+    Train baseline and improved models. Compare algorithms, tune hyperparameters,
+    and save artifacts (trained models, inference schema).
+  expected_output: >
+    Model performance metrics, saved model, inference schema.
+  agent: model_builder
+  context: [data_preparation]
+
+evaluation:
+  description: >
+    Evaluate models against business KPIs and fairness requirements.
+    Assess risks, interpretability, and business alignment.
+  expected_output: >
+    Evaluation report, risks, recommendation to accept or improve models.
+  agent: evaluator
+  context: [modeling]
+
+business_translation:
+  description: >
+    Translate technical results into business insights. Draft recommendations,
+    thresholds, and scorecards. Ensure outputs are actionable by stakeholders.
+  expected_output: >
+    Business decision brief, recommended actions, communication plan.
+  agent: business_translator
+  context: []
+
+workflow_management:
+  description: >
+    Oversee the entire workflow. Review outputs of each task, check if exit criteria
+    are satisfied, and decide whether to move forward, retry, or loop back.
+  expected_output: >
+    Workflow log, transition decisions, final confirmation when business translation 
+    is complete.
+  agent: manager
