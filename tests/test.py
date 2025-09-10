@@ -37,8 +37,8 @@ task = Task(
     description=(
         "Provided data path:\n\n"
         "{question}\n\n"
-        "Can you write for me code to analyse this data and save it to ./generated_code folder using FileWriter tool"
-        "And then analyse what you found"
+        "Can you write for me code to analyse this data and save it to ./generated_code folder using FileWriter tool",
+        "And then analyse the results"
     ),
     expected_output=("The actual code used to get the answer to the file."),
     agent=agent,
